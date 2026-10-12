@@ -1,0 +1,20 @@
+<view class="container">
+  <view class="header">
+    <view class="title">事业编制招录信息</view>
+  </view>
+
+  <view class="job-list">
+    <view class="job-item card" wx:for="{{items}}" wx:key="id">
+      <view class="job-title">{{item.title}}</view>
+      <view class="job-company">{{item.organizer || item.source}}</view>
+      <view class="job-meta">
+        <text class="tag tag-blue" wx:if="{{item.region}}">{{item.region}}</text>
+        <text class="tag tag-orange" wx:if="{{item.deadline}}">截止 {{item.deadline}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{items.length === 0}}">
+    <text>暂无事业编制招录信息</text>
+  </view>
+</view>

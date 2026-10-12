@@ -38,7 +38,12 @@
   </view>
 
   <!-- 按钮 -->
-  <button class="btn-primary" bindtap="openOriginal">复制原始岗位链接</button>
+  <view class="btn-group">
+    <button class="btn-fav {{isFav ? 'faved' : ''}}" bindtap="toggleFav">
+      {{isFav ? '⭐ 已收藏' : '☆ 收藏岗位'}}
+    </button>
+    <button class="btn-primary" bindtap="openOriginal">复制岗位链接</button>
+  </view>
 </view>
 
 <!-- 加载中 -->

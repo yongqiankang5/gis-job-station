@@ -3,6 +3,8 @@
     "pages/index/index",
     "pages/jobs/jobs",
     "pages/job-detail/job-detail",
+    "pages/favorites/favorites",
+    "pages/official/official",
     "pages/stats/stats",
     "pages/map/map"
   ],

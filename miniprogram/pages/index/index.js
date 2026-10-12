@@ -27,6 +27,18 @@ Page({
     wx.switchTab({ url: '/pages/jobs/jobs' })
   },
 
+  goToMap() {
+    wx.switchTab({ url: '/pages/map/map' })
+  },
+
+  goToFavorites() {
+    wx.navigateTo({ url: '/pages/favorites/favorites' })
+  },
+
+  goToOfficial() {
+    wx.navigateTo({ url: '/pages/official/official' })
+  },
+
   goToStats() {
     wx.switchTab({ url: '/pages/stats/stats' })
   }

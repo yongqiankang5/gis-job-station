@@ -30,11 +30,23 @@
     <view class="section-title">快速导航</view>
     <view class="nav-list">
       <view class="nav-item" bindtap="goToJobs">
-        <text>岗位浏览</text>
+        <text>💼 岗位浏览</text>
+        <text class="arrow">›</text>
+      </view>
+      <view class="nav-item" bindtap="goToMap">
+        <text>🗺️ 城市分布地图</text>
+        <text class="arrow">›</text>
+      </view>
+      <view class="nav-item" bindtap="goToFavorites">
+        <text>⭐ 我的收藏</text>
+        <text class="arrow">›</text>
+      </view>
+      <view class="nav-item" bindtap="goToOfficial">
+        <text>🏛️ 事业编制招录</text>
         <text class="arrow">›</text>
       </view>
       <view class="nav-item" bindtap="goToStats">
-        <text>数据分析</text>
+        <text>📊 数据分析</text>
         <text class="arrow">›</text>
       </view>
     </view>

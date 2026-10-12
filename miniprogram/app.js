@@ -1,8 +1,16 @@
 App({
   onLaunch() {
-    // 先加载本地包内置数据（兜底）
-    this.loadLocalManifest()
-    // 再尝试从线上拉最新数据
+    // 用文件系统API读取本地包内置数据
+    const fs = wx.getFileSystemManager()
+    try {
+      const manifestStr = fs.readFileSync('/data/manifest.json', 'utf-8')
+      this.globalData.manifest = JSON.parse(manifestStr)
+      const overviewStr = fs.readFileSync('/data/overview.json', 'utf-8')
+      this.globalData.overview = JSON.parse(overviewStr)
+    } catch (e) {
+      console.error('读取本地数据失败', e)
+    }
+    // 尝试从线上拉最新数据
     this.checkRemoteUpdate()
   },
 
@@ -12,17 +20,6 @@ App({
     // 线上数据地址：GitHub Pages地址
     remoteBase: 'https://yongqiankang5.github.io/gis-job-station/miniprogram/data/',
     useRemote: false,
-  },
-
-  // 加载本地包内置数据
-  loadLocalManifest() {
-    const that = this
-    wx.request({
-      url: '/data/manifest.json',
-      success(res) {
-        that.globalData.manifest = res.data
-      }
-    })
   },
 
   // 检查线上是否有更新数据
@@ -41,7 +38,6 @@ App({
         }
       },
       fail() {
-        // 线上拉取失败就用本地数据，不影响使用
         console.log('线上数据不可用，使用本地包数据')
       }
     })
@@ -52,32 +48,36 @@ App({
     const that = this
     // 去掉路径开头的斜杠
     const cleanPath = path.replace(/^\//, '')
-    return new Promise((resolve, reject) => {
-      // 如果开启了线上数据，先请求线上
-      if (that.globalData.useRemote) {
+    const fs = wx.getFileSystemManager()
+
+    // 线上模式
+    if (that.globalData.useRemote) {
+      return new Promise((resolve, reject) => {
         wx.request({
-          url: that.globalData.remoteBase + cleanPath,
+          url: that.globalData.remoteBase + cleanPath.replace('data/', ''),
           success(res) {
             resolve(res.data)
           },
           fail() {
             // 线上失败，回退本地
-            wx.request({
-              url: path,
-              success: res2 => resolve(res2.data),
-              fail: reject
-            })
+            try {
+              const str = fs.readFileSync('/' + cleanPath, 'utf-8')
+              resolve(JSON.parse(str))
+            } catch (e) {
+              reject(e)
+            }
           }
         })
-      } else {
-        // 没开线上，直接读本地
-        wx.request({
-          url: path,
-          success(res) {
-            resolve(res.data)
-          },
-          fail: reject
-        })
+      })
+    }
+
+    // 本地模式：用文件系统读
+    return new Promise((resolve, reject) => {
+      try {
+        const str = fs.readFileSync('/' + cleanPath, 'utf-8')
+        resolve(JSON.parse(str))
+      } catch (e) {
+        reject(e)
       }
     })
   }

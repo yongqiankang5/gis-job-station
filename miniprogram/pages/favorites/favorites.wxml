@@ -1,0 +1,20 @@
+<view class="container">
+  <view class="header">
+    <view class="title">我的收藏</view>
+  </view>
+
+  <view class="job-list">
+    <view class="job-item card" wx:for="{{jobs}}" wx:key="id" data-job="{{item}}" bindtap="goToDetail">
+      <view class="job-title">{{item.title}}</view>
+      <view class="job-company">{{item.company}}</view>
+      <view class="job-meta">
+        <text class="tag tag-blue">{{item.city}}</text>
+        <text class="tag tag-orange" wx:if="{{item.salary_note}}">{{item.salary_note}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{jobs.length === 0}}">
+    <text>还没有收藏岗位</text>
+  </view>
+</view>

@@ -4,11 +4,34 @@ Page({
   data: {
     job: null,
     loading: true,
+    isFav: false,
   },
 
   onLoad(options) {
     const jobId = parseInt(options.id)
+    this.jobId = jobId
     this.findJobById(jobId)
+    this.checkFavStatus()
+  },
+
+  // 检查是否已收藏
+  checkFavStatus() {
+    const favs = wx.getStorageSync('fav_jobs') || []
+    this.setData({ isFav: favs.includes(this.jobId) })
+  },
+
+  // 切换收藏
+  toggleFav() {
+    let favs = wx.getStorageSync('fav_jobs') || []
+    if (this.data.isFav) {
+      favs = favs.filter(id => id !== this.jobId)
+      wx.showToast({ title: '已取消收藏', icon: 'success' })
+    } else {
+      favs.push(this.jobId)
+      wx.showToast({ title: '收藏成功', icon: 'success' })
+    }
+    wx.setStorageSync('fav_jobs', favs)
+    this.setData({ isFav: !this.data.isFav })
   },
 
   // 从所有分片里找对应id的岗位

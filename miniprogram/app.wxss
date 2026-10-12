@@ -75,6 +75,131 @@ page {
 }
 
 /* 岗位列表项 */
-job-item {
+.job-item {
   margin-bottom: 20rpx;
+}
+
+/* 搜索栏 */
+.search-bar {
+  background: #fff;
+  border-radius: 44rpx;
+  padding: 16rpx 30rpx;
+  margin-bottom: 16rpx;
+}
+
+.search-input {
+  font-size: 28rpx;
+}
+
+/* 筛选栏 */
+.filter-bar {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+}
+
+.filter-item {
+  background: #fff;
+  padding: 12rpx 24rpx;
+  border-radius: 30rpx;
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 按钮组 */
+.btn-group {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 20rpx;
+}
+
+.btn-group button {
+  flex: 1;
+  margin: 0;
+}
+
+.btn-fav {
+  background: #fff3e0;
+  color: #e67e22;
+  border-radius: 44rpx;
+}
+
+.btn-fav.faved {
+  background: #ffd54f;
+  color: #fff;
+}
+
+/* 头部 */
+.header {
+  text-align: center;
+  padding: 30rpx 0;
+}
+
+.header .title {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 空状态 */
+.empty {
+  text-align: center;
+  padding: 100rpx 0;
+  color: #999;
+}
+
+/* 快速导航 */
+.nav-list {
+  margin-top: 10rpx;
+}
+
+.nav-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.nav-item:last-child {
+  border-bottom: none;
+}
+
+.arrow {
+  color: #ccc;
+  font-size: 32rpx;
+}
+
+/* 城市分布 */
+.city-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.city-name {
+  width: 100rpx;
+  font-size: 26rpx;
+}
+
+.city-bar {
+  flex: 1;
+  height: 20rpx;
+  background: #f0f0f0;
+  border-radius: 10rpx;
+  margin: 0 16rpx;
+  overflow: hidden;
+}
+
+.city-bar-fill {
+  height: 100%;
+  background: #2c5f8f;
+  border-radius: 10rpx;
+}
+
+.city-count {
+  width: 120rpx;
+  text-align: right;
+  font-size: 24rpx;
+  color: #666;
 }

@@ -1,4 +1,23 @@
 <view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <input class="search-input" placeholder="搜索岗位、公司名称..." value="{{keyword}}" bindinput="onSearchInput" confirm-type="search" bindconfirm="doSearch"/>
+  </view>
+
+  <!-- 筛选栏 -->
+  <view class="filter-bar">
+    <picker bindchange="onCityChange" value="{{selectedCityIndex}}" range="{{cities}}">
+      <view class="filter-item">
+        {{selectedCity || '全部城市'}} ▾
+      </view>
+    </picker>
+    <picker bindchange="onSalaryChange" range="{{salaryOptions}}">
+      <view class="filter-item">
+        {{selectedSalary || '全部薪资'}} ▾
+      </view>
+    </picker>
+  </view>
+
   <!-- 岗位列表 -->
   <view class="job-list">
     <view class="job-item card" wx:for="{{jobs}}" wx:key="id" data-job="{{item}}" bindtap="goToDetail">
