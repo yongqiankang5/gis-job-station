@@ -1,23 +1,28 @@
 <view class="container">
   <view class="header">
-    <view class="title">事业编制招录统计</view>
+    <view class="title">事业编制招录信息</view>
   </view>
 
-  <!-- 年度招录 -->
-  <view class="card">
-    <view class="section-title">年度招录情况</view>
-    <view class="info-row" wx:for="{{data.by_year}}" wx:key="year">
-      <text class="label">{{item.year}}年</text>
-      <text class="value">计划 {{item.planned_count}} 人，已招 {{item.actual_count}} 人</text>
+  <!-- 具体公告列表 -->
+  <view class="card" wx:if="{{data.records.length > 0}}">
+    <view class="section-title">最新招录公告</view>
+    <view class="job-item card" wx:for="{{data.records}}" wx:key="id" bindtap="copyUrl" data-url="{{item.url}}">
+      <view class="job-title">{{item.title}}</view>
+      <view class="job-company">{{item.unit}}</view>
+      <view class="job-meta">
+        <text class="tag tag-blue">{{item.province}} {{item.city}}</text>
+        <text class="tag tag-orange" wx:if="{{item.count}}">招 {{item.count}} 人</text>
+        <text class="tag tag-blue">{{item.year}}年</text>
+      </view>
     </view>
   </view>
 
-  <!-- 招录单位 -->
+  <!-- 年度招录统计 -->
   <view class="card">
-    <view class="section-title">主要招录单位</view>
-    <view class="info-row" wx:for="{{data.by_unit}}" wx:key="unit_name">
-      <text class="label">{{item.unit_name}}</text>
-      <text class="value">{{item.actual_count}} 人</text>
+    <view class="section-title">年度招录统计</view>
+    <view class="info-row" wx:for="{{data.by_year}}" wx:key="year">
+      <text class="label">{{item.year}}年</text>
+      <text class="value">计划 {{item.planned_count}} 人，已招 {{item.actual_count}} 人</text>
     </view>
   </view>
 

@@ -103,10 +103,35 @@ def export_stats(db, output_dir: Path) -> None:
     with open(output_dir / "trend.json", "w", encoding="utf-8") as f:
         json.dump(trend, f, ensure_ascii=False, separators=(",", ":"))
 
-    # 事业单位分析
-    official = analyzer.get_official_analysis()
+    # 事业单位分析 + 具体公告列表
+    from app.models import OfficialRecord
+    from sqlalchemy import select
+    official_stats = analyzer.get_official_analysis()
+    
+    # 导出具体的事业编记录
+    records = list(db.scalars(
+        select(OfficialRecord).order_by(OfficialRecord.year.desc(), OfficialRecord.id.desc()).limit(100)
+    ))
+    official_list = []
+    for r in records:
+        official_list.append({
+            "id": r.id,
+            "title": r.job_title,
+            "unit": r.unit_name,
+            "province": r.province,
+            "city": r.city,
+            "count": r.planned_count,
+            "major": r.major_requirement,
+            "url": r.source_url,
+            "year": r.year,
+        })
+    
+    official_data = {
+        **official_stats,
+        "records": official_list,
+    }
     with open(output_dir / "official.json", "w", encoding="utf-8") as f:
-        json.dump(official, f, ensure_ascii=False, separators=(",", ":"))
+        json.dump(official_data, f, ensure_ascii=False, separators=(",", ":"))
 
 
 def main() -> None:
