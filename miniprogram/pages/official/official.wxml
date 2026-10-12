@@ -3,10 +3,24 @@
     <view class="title">事业编制招录信息</view>
   </view>
 
+  <!-- 筛选栏 -->
+  <view class="filter-bar">
+    <picker bindchange="onProvinceChange" range="{{provinces}}">
+      <view class="filter-item">
+        {{selectedProvince || '全部省份'}} ▾
+      </view>
+    </picker>
+    <picker bindchange="onYearChange" range="{{years}}">
+      <view class="filter-item">
+        {{selectedYear || '全部年份'}} ▾
+      </view>
+    </picker>
+  </view>
+
   <!-- 具体公告列表 -->
-  <view class="card" wx:if="{{data.records.length > 0}}">
-    <view class="section-title">最新招录公告</view>
-    <view class="job-item card" wx:for="{{data.records}}" wx:key="id" bindtap="copyUrl" data-url="{{item.url}}">
+  <view class="card" wx:if="{{filteredRecords.length > 0}}">
+    <view class="section-title">招录公告</view>
+    <view class="job-item card" wx:for="{{filteredRecords}}" wx:key="id" bindtap="copyUrl" data-url="{{item.url}}">
       <view class="job-title">{{item.title}}</view>
       <view class="job-company">{{item.unit}}</view>
       <view class="job-meta">
@@ -15,6 +29,10 @@
         <text class="tag tag-blue">{{item.year}}年</text>
       </view>
     </view>
+  </view>
+
+  <view class="empty" wx:if="{{filteredRecords.length === 0}}">
+    <text>没有符合条件的公告</text>
   </view>
 
   <!-- 年度招录统计 -->
