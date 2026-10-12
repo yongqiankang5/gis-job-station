@@ -54,15 +54,22 @@ Page({
     }
   },
 
-  // 打开原始链接
+  // 复制原岗位链接
   openOriginal() {
     if (this.data.job.url) {
       wx.setClipboardData({
         data: this.data.job.url,
         success() {
-          wx.showToast({ title: '链接已复制', icon: 'success' })
+          wx.showModal({
+            title: '链接已复制',
+            content: '打开手机浏览器，粘贴链接就能在BOSS直聘上投递了',
+            showCancel: false,
+            confirmText: '知道了'
+          })
         }
       })
+    } else {
+      wx.showToast({ title: '暂无原始链接', icon: 'none' })
     }
   }
 })

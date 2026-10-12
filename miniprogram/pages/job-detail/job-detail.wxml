@@ -40,9 +40,9 @@
   <!-- 按钮 -->
   <view class="btn-group">
     <button class="btn-fav {{isFav ? 'faved' : ''}}" bindtap="toggleFav">
-      {{isFav ? '⭐ 已收藏' : '☆ 收藏岗位'}}
+      {{isFav ? '⭐ 已收藏' : '☆ 收藏'}}
     </button>
-    <button class="btn-primary" bindtap="openOriginal">复制岗位链接</button>
+    <button class="btn-primary" bindtap="openOriginal">去BOSS投递</button>
   </view>
 </view>
 
