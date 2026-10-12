@@ -5,12 +5,13 @@ Page({
     jobs: [],
     allJobs: [],
     loading: false,
-    hasMore: true,
     displayCount: 20,
     keyword: '',
-    cities: ['全部城市'],
+    cities: [],
+    filteredCities: [],
     selectedCity: '',
-    selectedCityIndex: 0,
+    citySearch: '',
+    showCityPopup: false,
     salaryOptions: ['全部薪资', '10K以下', '10-20K', '20-30K', '30K以上'],
     selectedSalary: '',
   },
@@ -19,7 +20,7 @@ Page({
     this.loadAllJobs()
   },
 
-  // 一次性加载全部岗位（2000多条，本地过滤很快）
+  // 一次性加载全部岗位
   async loadAllJobs() {
     this.setData({ loading: true })
     try {
@@ -28,12 +29,13 @@ Page({
         const chunk = await app.loadJson(`/data/jobs_${i}.json`)
         allJobs = allJobs.concat(chunk)
       }
-      // 提取城市列表
-      const citySet = new Set(allJobs.map(j => j.city))
-      const cities = ['全部城市', ...Array.from(citySet).sort()]
+      // 提取城市列表，只保留真实城市，过滤掉省份等非城市
+      const citySet = new Set(allJobs.map(j => j.city).filter(c => c && c.length <= 4))
+      const cities = Array.from(citySet).sort()
       this.setData({
         allJobs,
         cities,
+        filteredCities: cities,
         loading: false,
       })
       this.applyFilter()
@@ -41,6 +43,36 @@ Page({
       wx.showToast({ title: '加载失败', icon: 'error' })
       this.setData({ loading: false })
     }
+  },
+
+  // 打开城市弹窗
+  openCityPopup() {
+    this.setData({ showCityPopup: true, citySearch: '' })
+  },
+
+  closeCityPopup() {
+    this.setData({ showCityPopup: false })
+  },
+
+  // 城市搜索
+  onCitySearch(e) {
+    const kw = e.detail.value
+    const filtered = this.data.cities.filter(c => c.includes(kw))
+    this.setData({
+      citySearch: kw,
+      filteredCities: filtered,
+    })
+  },
+
+  // 选择城市
+  selectCity(e) {
+    const city = e.currentTarget.dataset.city
+    this.setData({
+      selectedCity: city,
+      showCityPopup: false,
+      displayCount: 20,
+    })
+    this.applyFilter()
   },
 
   // 应用筛选条件
@@ -56,7 +88,7 @@ Page({
       )
     }
 
-    if (selectedCity && selectedCity !== '全部城市') {
+    if (selectedCity) {
       result = result.filter(j => j.city === selectedCity)
     }
 
@@ -73,7 +105,6 @@ Page({
 
     this.setData({
       jobs: result.slice(0, this.data.displayCount),
-      hasMore: result.length > this.data.displayCount,
     })
   },
 
@@ -83,16 +114,6 @@ Page({
 
   doSearch() {
     this.setData({ displayCount: 20 })
-    this.applyFilter()
-  },
-
-  onCityChange(e) {
-    const idx = e.detail.value
-    this.setData({
-      selectedCityIndex: idx,
-      selectedCity: this.data.cities[idx],
-      displayCount: 20,
-    })
     this.applyFilter()
   },
 
@@ -113,7 +134,6 @@ Page({
 
   // 上拉加载更多
   onReachBottom() {
-    if (!this.data.hasMore) return
     const newCount = this.data.displayCount + 20
     this.setData({ displayCount: newCount })
     this.applyFilter()

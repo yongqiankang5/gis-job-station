@@ -6,17 +6,35 @@
 
   <!-- 筛选栏 -->
   <view class="filter-bar">
-    <picker bindchange="onCityChange" value="{{selectedCityIndex}}" range="{{cities}}">
-      <view class="filter-item">
-        {{selectedCity || '全部城市'}} ▾
-      </view>
-    </picker>
+    <view class="filter-item" bindtap="openCityPopup">
+      {{selectedCity || '全部城市'}} ▾
+    </view>
     <picker bindchange="onSalaryChange" range="{{salaryOptions}}">
       <view class="filter-item">
         {{selectedSalary || '全部薪资'}} ▾
       </view>
     </picker>
   </view>
+
+  <!-- 城市选择弹窗 -->
+  <view class="city-popup" wx:if="{{showCityPopup}}">
+    <view class="city-popup-header">
+      <input class="city-search-input" placeholder="搜索城市..." value="{{citySearch}}" bindinput="onCitySearch"/>
+    </view>
+    <view class="city-list">
+      <view class="city-option" bindtap="selectCity" data-city="">
+        全部城市
+      </view>
+      <view class="city-option {{selectedCity === item ? 'selected' : ''}}" 
+            wx:for="{{filteredCities}}" 
+            wx:key="*this" 
+            bindtap="selectCity" 
+            data-city="{{item}}">
+        {{item}}
+      </view>
+    </view>
+  </view>
+  <view class="mask" wx:if="{{showCityPopup}}" bindtap="closeCityPopup"></view>
 
   <!-- 岗位列表 -->
   <view class="job-list">

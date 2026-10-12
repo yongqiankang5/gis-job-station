@@ -1,20 +1,31 @@
 <view class="container">
   <view class="header">
-    <view class="title">事业编制招录信息</view>
+    <view class="title">事业编制招录统计</view>
   </view>
 
-  <view class="job-list">
-    <view class="job-item card" wx:for="{{items}}" wx:key="id">
-      <view class="job-title">{{item.title}}</view>
-      <view class="job-company">{{item.organizer || item.source}}</view>
-      <view class="job-meta">
-        <text class="tag tag-blue" wx:if="{{item.region}}">{{item.region}}</text>
-        <text class="tag tag-orange" wx:if="{{item.deadline}}">截止 {{item.deadline}}</text>
-      </view>
+  <!-- 年度招录 -->
+  <view class="card">
+    <view class="section-title">年度招录情况</view>
+    <view class="info-row" wx:for="{{data.by_year}}" wx:key="year">
+      <text class="label">{{item.year}}年</text>
+      <text class="value">计划 {{item.planned_count}} 人，已招 {{item.actual_count}} 人</text>
     </view>
   </view>
 
-  <view class="empty" wx:if="{{items.length === 0}}">
-    <text>暂无事业编制招录信息</text>
+  <!-- 招录单位 -->
+  <view class="card">
+    <view class="section-title">主要招录单位</view>
+    <view class="info-row" wx:for="{{data.by_unit}}" wx:key="unit_name">
+      <text class="label">{{item.unit_name}}</text>
+      <text class="value">{{item.actual_count}} 人</text>
+    </view>
+  </view>
+
+  <!-- 热门专业 -->
+  <view class="card">
+    <view class="section-title">热门招录专业</view>
+    <view class="skill-list">
+      <text class="tag tag-blue" wx:for="{{data.major_distribution}}" wx:key="name">{{item.name}} ({{item.count}}人)</text>
+    </view>
   </view>
 </view>
