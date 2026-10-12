@@ -1,0 +1,14 @@
+.git
+.gitignore
+.venv
+__pycache__
+*.py[cod]
+.env
+data/*.db
+data/*.db-*
+data/backups
+data/logs
+data/raw
+data/snapshots
+.idea
+.vscode

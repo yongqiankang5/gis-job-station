@@ -1,0 +1,2844 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "GIS 遥感就业情报站",
+    "description": "GIS 与遥感招聘信息聚合、筛选和需求分析 API",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/jobs": {
+      "get": {
+        "tags": [
+          "招聘岗位"
+        ],
+        "summary": "List Jobs",
+        "description": "按多项条件筛选有效岗位并返回分页结果。",
+        "operationId": "list_jobs_api_jobs_get",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Page Size"
+            }
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "职位、公司或 JD 关键词",
+              "title": "Keyword"
+            },
+            "description": "职位、公司或 JD 关键词"
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "城市，多选用逗号分隔",
+              "title": "City"
+            },
+            "description": "城市，多选用逗号分隔"
+          },
+          {
+            "name": "province",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "省份",
+              "title": "Province"
+            },
+            "description": "省份"
+          },
+          {
+            "name": "job_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "岗位类型，多选用逗号分隔",
+              "title": "Job Type"
+            },
+            "description": "岗位类型，多选用逗号分隔"
+          },
+          {
+            "name": "education",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "学历，多选用逗号分隔",
+              "title": "Education"
+            },
+            "description": "学历，多选用逗号分隔"
+          },
+          {
+            "name": "experience",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "经验，多选用逗号分隔",
+              "title": "Experience"
+            },
+            "description": "经验，多选用逗号分隔"
+          },
+          {
+            "name": "salary_min",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "期望薪资下限 K/月",
+              "title": "Salary Min"
+            },
+            "description": "期望薪资下限 K/月"
+          },
+          {
+            "name": "salary_max",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "期望薪资上限 K/月",
+              "title": "Salary Max"
+            },
+            "description": "期望薪资上限 K/月"
+          },
+          {
+            "name": "skills",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "技能标签，多选用逗号分隔且为 AND",
+              "title": "Skills"
+            },
+            "description": "技能标签，多选用逗号分隔且为 AND"
+          },
+          {
+            "name": "company_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "公司类型",
+              "title": "Company Type"
+            },
+            "description": "公司类型"
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "来源平台",
+              "title": "Source"
+            },
+            "description": "来源平台"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^(salary_desc|salary_asc|publish_desc|quality_desc)$",
+              "description": "排序方式",
+              "default": "publish_desc",
+              "title": "Sort"
+            },
+            "description": "排序方式"
+          },
+          {
+            "name": "min_quality",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 0,
+              "description": "最低质量分",
+              "default": 0,
+              "title": "Min Quality"
+            },
+            "description": "最低质量分"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/jobs/export": {
+      "get": {
+        "tags": [
+          "招聘岗位"
+        ],
+        "summary": "Export Jobs",
+        "description": "按当前筛选条件导出全部匹配岗位为 UTF-8 BOM CSV 附件。",
+        "operationId": "export_jobs_api_jobs_export_get",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "职位、公司或 JD 关键词",
+              "title": "Keyword"
+            },
+            "description": "职位、公司或 JD 关键词"
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "城市，多选用逗号分隔",
+              "title": "City"
+            },
+            "description": "城市，多选用逗号分隔"
+          },
+          {
+            "name": "province",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "省份",
+              "title": "Province"
+            },
+            "description": "省份"
+          },
+          {
+            "name": "job_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "岗位类型，多选用逗号分隔",
+              "title": "Job Type"
+            },
+            "description": "岗位类型，多选用逗号分隔"
+          },
+          {
+            "name": "education",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "学历，多选用逗号分隔",
+              "title": "Education"
+            },
+            "description": "学历，多选用逗号分隔"
+          },
+          {
+            "name": "experience",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "经验，多选用逗号分隔",
+              "title": "Experience"
+            },
+            "description": "经验，多选用逗号分隔"
+          },
+          {
+            "name": "salary_min",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "期望薪资下限 K/月",
+              "title": "Salary Min"
+            },
+            "description": "期望薪资下限 K/月"
+          },
+          {
+            "name": "salary_max",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "期望薪资上限 K/月",
+              "title": "Salary Max"
+            },
+            "description": "期望薪资上限 K/月"
+          },
+          {
+            "name": "skills",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "技能标签，多选用逗号分隔且为 AND",
+              "title": "Skills"
+            },
+            "description": "技能标签，多选用逗号分隔且为 AND"
+          },
+          {
+            "name": "company_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "公司类型",
+              "title": "Company Type"
+            },
+            "description": "公司类型"
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "来源平台",
+              "title": "Source"
+            },
+            "description": "来源平台"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^(salary_desc|salary_asc|publish_desc|quality_desc)$",
+              "description": "排序方式",
+              "default": "publish_desc",
+              "title": "Sort"
+            },
+            "description": "排序方式"
+          },
+          {
+            "name": "min_quality",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 0,
+              "description": "最低质量分",
+              "default": 0,
+              "title": "Min Quality"
+            },
+            "description": "最低质量分"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/jobs/{job_id}": {
+      "get": {
+        "tags": [
+          "招聘岗位"
+        ],
+        "summary": "Get Job",
+        "description": "按主键查询单条有效岗位详情。",
+        "operationId": "get_job_api_jobs__job_id__get",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Job Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/stats/overview": {
+      "get": {
+        "tags": [
+          "统计分析"
+        ],
+        "summary": "Overview",
+        "description": "返回岗位数量、覆盖范围、薪资和近期新增概览。",
+        "operationId": "overview_api_stats_overview_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OverviewStats"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/stats/city-distribution": {
+      "get": {
+        "tags": [
+          "统计分析"
+        ],
+        "summary": "City Distribution Analysis",
+        "description": "返回 Top 城市、省份及岗位密度指数。",
+        "operationId": "city_distribution_analysis_api_stats_city_distribution_get",
+        "parameters": [
+          {
+            "name": "top_n",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Top N"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CityDistributionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/stats/salary-distribution": {
+      "get": {
+        "tags": [
+          "统计分析"
+        ],
+        "summary": "Salary Distribution",
+        "description": "返回薪资区间和多维平均薪资。",
+        "operationId": "salary_distribution_api_stats_salary_distribution_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SalaryDistributionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/stats/skill-analysis": {
+      "get": {
+        "tags": [
+          "统计分析"
+        ],
+        "summary": "Skill Analysis",
+        "description": "返回技能频次、共现、类型偏好和薪资溢价。",
+        "operationId": "skill_analysis_api_stats_skill_analysis_get",
+        "parameters": [
+          {
+            "name": "top_n",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 30,
+              "title": "Top N"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SkillAnalysisResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/stats/requirement-analysis": {
+      "get": {
+        "tags": [
+          "统计分析"
+        ],
+        "summary": "Requirement Analysis",
+        "description": "返回学历和经验要求差异。",
+        "operationId": "requirement_analysis_api_stats_requirement_analysis_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequirementAnalysisResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/stats/company-analysis": {
+      "get": {
+        "tags": [
+          "统计分析"
+        ],
+        "summary": "Company Analysis",
+        "description": "返回公司招聘需求、类型分布和薪资对比。",
+        "operationId": "company_analysis_api_stats_company_analysis_get",
+        "parameters": [
+          {
+            "name": "top_n",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Top N"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAnalysisResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/stats/official-analysis": {
+      "get": {
+        "tags": [
+          "统计分析"
+        ],
+        "summary": "Official Analysis",
+        "description": "返回事业单位招录兑现率、省份和拟聘人员背景统计。",
+        "operationId": "official_analysis_api_stats_official_analysis_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfficialAnalysisResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/stats/trend": {
+      "get": {
+        "tags": [
+          "统计分析"
+        ],
+        "summary": "Trend Analysis",
+        "description": "返回近月岗位薪资趋势和技能年度对比。",
+        "operationId": "trend_analysis_api_stats_trend_get",
+        "parameters": [
+          {
+            "name": "months",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 60,
+              "minimum": 1,
+              "default": 12,
+              "title": "Months"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrendResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/stats/skills": {
+      "get": {
+        "tags": [
+          "统计分析"
+        ],
+        "summary": "Skill Demand",
+        "description": "返回旧版首页使用的技能频次列表。",
+        "operationId": "skill_demand_api_stats_skills_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 50,
+              "minimum": 1,
+              "default": 15,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NamedValue"
+                  },
+                  "title": "Response Skill Demand Api Stats Skills Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/stats/job-types": {
+      "get": {
+        "tags": [
+          "统计分析"
+        ],
+        "summary": "Job Type Distribution",
+        "description": "返回旧版首页使用的岗位类型频次。",
+        "operationId": "job_type_distribution_api_stats_job_types_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/NamedValue"
+                  },
+                  "type": "array",
+                  "title": "Response Job Type Distribution Api Stats Job Types Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/stats/cities": {
+      "get": {
+        "tags": [
+          "统计分析"
+        ],
+        "summary": "City Frequency",
+        "description": "返回旧版首页使用的城市岗位频次。",
+        "operationId": "city_frequency_api_stats_cities_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NamedValue"
+                  },
+                  "title": "Response City Frequency Api Stats Cities Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/stats/map": {
+      "get": {
+        "tags": [
+          "统计分析"
+        ],
+        "summary": "Map Distribution",
+        "description": "按省市聚合岗位数量供现有地图使用。",
+        "operationId": "map_distribution_api_stats_map_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MapPoint"
+                  },
+                  "type": "array",
+                  "title": "Response Map Distribution Api Stats Map Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/official": {
+      "get": {
+        "tags": [
+          "事业单位招录"
+        ],
+        "summary": "List Official Records",
+        "description": "动态筛选事业单位招录记录并返回分页结果。",
+        "operationId": "list_official_records_api_official_get",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "单位、岗位或专业关键词",
+              "title": "Keyword"
+            },
+            "description": "单位、岗位或专业关键词"
+          },
+          {
+            "name": "province",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "省份",
+              "title": "Province"
+            },
+            "description": "省份"
+          },
+          {
+            "name": "unit_level",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "单位级别",
+              "title": "Unit Level"
+            },
+            "description": "单位级别"
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 2100,
+                  "minimum": 2000
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "年份",
+              "title": "Year"
+            },
+            "description": "年份"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfficialListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/official/stats": {
+      "get": {
+        "tags": [
+          "事业单位招录"
+        ],
+        "summary": "Official Stats",
+        "description": "返回全部年份或指定年份的事业单位招录统计。",
+        "operationId": "official_stats_api_official_stats_get",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 2100,
+                  "minimum": 2000
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Year"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfficialAnalysisResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/official/{record_id}": {
+      "get": {
+        "tags": [
+          "事业单位招录"
+        ],
+        "summary": "Get Official Record",
+        "description": "按主键查询单条事业单位招录详情。",
+        "operationId": "get_official_record_api_official__record_id__get",
+        "parameters": [
+          {
+            "name": "record_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Record Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfficialRecordResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "tags": [
+          "系统"
+        ],
+        "summary": "Health",
+        "description": "返回应用健康状态。",
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/run-scraper": {
+      "post": {
+        "tags": [
+          "管理"
+        ],
+        "summary": "Run Scraper",
+        "description": "后台触发指定来源抓取；跨进程锁会阻止重复执行。",
+        "operationId": "run_scraper_api_admin_run_scraper_post",
+        "parameters": [
+          {
+            "name": "source",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "boss",
+                "official",
+                "all"
+              ],
+              "type": "string",
+              "description": "抓取来源：boss、official 或 all",
+              "default": "all",
+              "title": "Source"
+            },
+            "description": "抓取来源：boss、official 或 all"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Run Scraper Api Admin Run Scraper Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/scheduler-status": {
+      "get": {
+        "tags": [
+          "管理"
+        ],
+        "summary": "Scheduler Status",
+        "description": "返回周期任务、下次运行时间和最近一次手动或定时执行结果。",
+        "operationId": "scheduler_status_api_admin_scheduler_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Scheduler Status Api Admin Scheduler Status Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/clean": {
+      "post": {
+        "tags": [
+          "管理"
+        ],
+        "summary": "Run Clean",
+        "description": "后台触发岗位清洗、重复合并和质量评分。",
+        "operationId": "run_clean_api_admin_clean_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Run Clean Api Admin Clean Post"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AverageSalaryItem": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "average_salary": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Average Salary"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "count",
+          "average_salary"
+        ],
+        "title": "AverageSalaryItem",
+        "description": "带平均薪资的分组统计项。"
+      },
+      "CandidateInfo": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "school": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "School"
+          },
+          "major": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Major"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "CandidateInfo",
+        "description": "事业单位拟聘人员信息。"
+      },
+      "CityDistributionItem": {
+        "properties": {
+          "province": {
+            "type": "string",
+            "title": "Province"
+          },
+          "city": {
+            "type": "string",
+            "title": "City"
+          },
+          "job_count": {
+            "type": "integer",
+            "title": "Job Count"
+          },
+          "average_salary": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Average Salary"
+          },
+          "company_count": {
+            "type": "integer",
+            "title": "Company Count"
+          },
+          "city_level": {
+            "type": "string",
+            "title": "City Level"
+          },
+          "level_weight": {
+            "type": "number",
+            "title": "Level Weight"
+          },
+          "density_index": {
+            "type": "number",
+            "title": "Density Index"
+          }
+        },
+        "type": "object",
+        "required": [
+          "province",
+          "city",
+          "job_count",
+          "average_salary",
+          "company_count",
+          "city_level",
+          "level_weight",
+          "density_index"
+        ],
+        "title": "CityDistributionItem",
+        "description": "单个城市岗位聚合项。"
+      },
+      "CityDistributionResponse": {
+        "properties": {
+          "cities": {
+            "items": {
+              "$ref": "#/components/schemas/CityDistributionItem"
+            },
+            "type": "array",
+            "title": "Cities"
+          },
+          "provinces": {
+            "items": {
+              "$ref": "#/components/schemas/ProvinceDistributionItem"
+            },
+            "type": "array",
+            "title": "Provinces"
+          },
+          "city_level_weights": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "City Level Weights"
+          }
+        },
+        "type": "object",
+        "required": [
+          "cities",
+          "provinces",
+          "city_level_weights"
+        ],
+        "title": "CityDistributionResponse",
+        "description": "城市和省份岗位分布响应。"
+      },
+      "CompanyAnalysisResponse": {
+        "properties": {
+          "top_companies": {
+            "items": {
+              "$ref": "#/components/schemas/CompanyDemandItem"
+            },
+            "type": "array",
+            "title": "Top Companies"
+          },
+          "company_type_distribution": {
+            "items": {
+              "$ref": "#/components/schemas/DistributionItem"
+            },
+            "type": "array",
+            "title": "Company Type Distribution"
+          },
+          "salary_comparison": {
+            "items": {
+              "$ref": "#/components/schemas/AverageSalaryItem"
+            },
+            "type": "array",
+            "title": "Salary Comparison"
+          }
+        },
+        "type": "object",
+        "required": [
+          "top_companies",
+          "company_type_distribution",
+          "salary_comparison"
+        ],
+        "title": "CompanyAnalysisResponse",
+        "description": "公司需求、类型和薪资对比响应。"
+      },
+      "CompanyDemandItem": {
+        "properties": {
+          "company_name": {
+            "type": "string",
+            "title": "Company Name"
+          },
+          "job_count": {
+            "type": "integer",
+            "title": "Job Count"
+          },
+          "average_salary": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Average Salary"
+          },
+          "city_count": {
+            "type": "integer",
+            "title": "City Count"
+          },
+          "company_type": {
+            "type": "string",
+            "title": "Company Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "company_name",
+          "job_count",
+          "average_salary",
+          "city_count",
+          "company_type"
+        ],
+        "title": "CompanyDemandItem",
+        "description": "公司招聘需求聚合项。"
+      },
+      "DistributionItem": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "percentage": {
+            "type": "number",
+            "title": "Percentage"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "count",
+          "percentage"
+        ],
+        "title": "DistributionItem",
+        "description": "带百分比的分类分布项。"
+      },
+      "GroupDistribution": {
+        "properties": {
+          "group": {
+            "type": "string",
+            "title": "Group"
+          },
+          "distribution": {
+            "items": {
+              "$ref": "#/components/schemas/DistributionItem"
+            },
+            "type": "array",
+            "title": "Distribution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "group",
+          "distribution"
+        ],
+        "title": "GroupDistribution",
+        "description": "指定群体内部的分类分布。"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HealthResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "app": {
+            "type": "string",
+            "title": "App"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "app"
+        ],
+        "title": "HealthResponse",
+        "description": "健康检查响应。"
+      },
+      "JobListResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/JobResponse"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "page": {
+            "type": "integer",
+            "title": "Page"
+          },
+          "page_size": {
+            "type": "integer",
+            "title": "Page Size"
+          },
+          "pages": {
+            "type": "integer",
+            "title": "Pages"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "total",
+          "page",
+          "page_size",
+          "pages"
+        ],
+        "title": "JobListResponse",
+        "description": "带分页信息的岗位列表响应。"
+      },
+      "JobResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "source_id": {
+            "type": "string",
+            "title": "Source Id"
+          },
+          "job_title": {
+            "type": "string",
+            "title": "Job Title"
+          },
+          "company_name": {
+            "type": "string",
+            "title": "Company Name"
+          },
+          "company_type": {
+            "type": "string",
+            "title": "Company Type"
+          },
+          "city": {
+            "type": "string",
+            "title": "City"
+          },
+          "province": {
+            "type": "string",
+            "title": "Province"
+          },
+          "district": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "District"
+          },
+          "city_level": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City Level"
+          },
+          "salary_min": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Salary Min"
+          },
+          "salary_max": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Salary Max"
+          },
+          "salary_mid": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Salary Mid"
+          },
+          "salary_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Salary Note"
+          },
+          "education": {
+            "type": "string",
+            "title": "Education"
+          },
+          "experience": {
+            "type": "string",
+            "title": "Experience"
+          },
+          "job_type": {
+            "type": "string",
+            "title": "Job Type"
+          },
+          "job_description": {
+            "type": "string",
+            "title": "Job Description"
+          },
+          "skills": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Skills"
+          },
+          "publish_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Publish Date"
+          },
+          "crawl_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Crawl Date"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url"
+          },
+          "is_valid": {
+            "type": "boolean",
+            "title": "Is Valid"
+          },
+          "quality_score": {
+            "type": "integer",
+            "title": "Quality Score"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "is_cleaned": {
+            "type": "boolean",
+            "title": "Is Cleaned"
+          },
+          "cleaned_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cleaned At"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "source",
+          "source_id",
+          "job_title",
+          "company_name",
+          "company_type",
+          "city",
+          "province",
+          "district",
+          "city_level",
+          "salary_min",
+          "salary_max",
+          "salary_mid",
+          "salary_note",
+          "education",
+          "experience",
+          "job_type",
+          "job_description",
+          "publish_date",
+          "crawl_date",
+          "url",
+          "is_valid",
+          "quality_score",
+          "note",
+          "is_cleaned",
+          "cleaned_at",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "JobResponse",
+        "description": "单条招聘岗位响应。"
+      },
+      "JobTypeSkillGroup": {
+        "properties": {
+          "job_type": {
+            "type": "string",
+            "title": "Job Type"
+          },
+          "skills": {
+            "items": {
+              "$ref": "#/components/schemas/NameCount"
+            },
+            "type": "array",
+            "title": "Skills"
+          }
+        },
+        "type": "object",
+        "required": [
+          "job_type",
+          "skills"
+        ],
+        "title": "JobTypeSkillGroup",
+        "description": "某岗位类型的高频技能。"
+      },
+      "MapPoint": {
+        "properties": {
+          "province": {
+            "type": "string",
+            "title": "Province"
+          },
+          "city": {
+            "type": "string",
+            "title": "City"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "longitude": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Longitude"
+          },
+          "latitude": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latitude"
+          }
+        },
+        "type": "object",
+        "required": [
+          "province",
+          "city",
+          "count"
+        ],
+        "title": "MapPoint",
+        "description": "岗位城市聚合地图点响应。"
+      },
+      "MonthlyTrendItem": {
+        "properties": {
+          "month": {
+            "type": "string",
+            "title": "Month"
+          },
+          "job_count": {
+            "type": "integer",
+            "title": "Job Count"
+          },
+          "average_salary": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Average Salary"
+          }
+        },
+        "type": "object",
+        "required": [
+          "month",
+          "job_count",
+          "average_salary"
+        ],
+        "title": "MonthlyTrendItem",
+        "description": "单月岗位数量和薪资趋势项。"
+      },
+      "NameCount": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "count"
+        ],
+        "title": "NameCount",
+        "description": "名称与数量通用统计项。"
+      },
+      "NamedValue": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "value"
+        ],
+        "title": "NamedValue",
+        "description": "图表常用名称与数值响应。"
+      },
+      "OfficialAnalysisResponse": {
+        "properties": {
+          "record_count": {
+            "type": "integer",
+            "title": "Record Count"
+          },
+          "by_year": {
+            "items": {
+              "$ref": "#/components/schemas/OfficialYearItem"
+            },
+            "type": "array",
+            "title": "By Year"
+          },
+          "by_unit": {
+            "items": {
+              "$ref": "#/components/schemas/OfficialUnitItem"
+            },
+            "type": "array",
+            "title": "By Unit"
+          },
+          "by_province": {
+            "items": {
+              "$ref": "#/components/schemas/OfficialProvinceItem"
+            },
+            "type": "array",
+            "title": "By Province"
+          },
+          "top_schools": {
+            "items": {
+              "$ref": "#/components/schemas/NameCount"
+            },
+            "type": "array",
+            "title": "Top Schools"
+          },
+          "major_distribution": {
+            "items": {
+              "$ref": "#/components/schemas/NameCount"
+            },
+            "type": "array",
+            "title": "Major Distribution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "record_count",
+          "by_year",
+          "by_unit",
+          "by_province",
+          "top_schools",
+          "major_distribution"
+        ],
+        "title": "OfficialAnalysisResponse",
+        "description": "事业单位招录综合分析响应。"
+      },
+      "OfficialListResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/OfficialRecordResponse"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "page": {
+            "type": "integer",
+            "title": "Page"
+          },
+          "page_size": {
+            "type": "integer",
+            "title": "Page Size"
+          },
+          "pages": {
+            "type": "integer",
+            "title": "Pages"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "total",
+          "page",
+          "page_size",
+          "pages"
+        ],
+        "title": "OfficialListResponse",
+        "description": "带分页信息的事业单位记录列表响应。"
+      },
+      "OfficialProvinceItem": {
+        "properties": {
+          "province": {
+            "type": "string",
+            "title": "Province"
+          },
+          "planned_count": {
+            "type": "integer",
+            "title": "Planned Count"
+          },
+          "actual_count": {
+            "type": "integer",
+            "title": "Actual Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "province",
+          "planned_count",
+          "actual_count"
+        ],
+        "title": "OfficialProvinceItem",
+        "description": "省份事业单位招录统计项。"
+      },
+      "OfficialRecordResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "unit_name": {
+            "type": "string",
+            "title": "Unit Name"
+          },
+          "unit_level": {
+            "type": "string",
+            "title": "Unit Level"
+          },
+          "province": {
+            "type": "string",
+            "title": "Province"
+          },
+          "city": {
+            "type": "string",
+            "title": "City"
+          },
+          "job_title": {
+            "type": "string",
+            "title": "Job Title"
+          },
+          "planned_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Planned Count"
+          },
+          "actual_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actual Count"
+          },
+          "major_requirement": {
+            "type": "string",
+            "title": "Major Requirement"
+          },
+          "education": {
+            "type": "string",
+            "title": "Education"
+          },
+          "hired_candidates": {
+            "items": {
+              "$ref": "#/components/schemas/CandidateInfo"
+            },
+            "type": "array",
+            "title": "Hired Candidates"
+          },
+          "year": {
+            "type": "integer",
+            "title": "Year"
+          },
+          "source_url": {
+            "type": "string",
+            "title": "Source Url"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "unit_name",
+          "unit_level",
+          "province",
+          "city",
+          "job_title",
+          "planned_count",
+          "actual_count",
+          "major_requirement",
+          "education",
+          "year",
+          "source_url",
+          "created_at"
+        ],
+        "title": "OfficialRecordResponse",
+        "description": "事业单位招录记录响应。"
+      },
+      "OfficialUnitItem": {
+        "properties": {
+          "unit_name": {
+            "type": "string",
+            "title": "Unit Name"
+          },
+          "planned_count": {
+            "type": "integer",
+            "title": "Planned Count"
+          },
+          "actual_count": {
+            "type": "integer",
+            "title": "Actual Count"
+          },
+          "fulfillment_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fulfillment Rate"
+          }
+        },
+        "type": "object",
+        "required": [
+          "unit_name",
+          "planned_count",
+          "actual_count",
+          "fulfillment_rate"
+        ],
+        "title": "OfficialUnitItem",
+        "description": "事业单位招录兑现率统计项。"
+      },
+      "OfficialYearItem": {
+        "properties": {
+          "year": {
+            "type": "integer",
+            "title": "Year"
+          },
+          "planned_count": {
+            "type": "integer",
+            "title": "Planned Count"
+          },
+          "actual_count": {
+            "type": "integer",
+            "title": "Actual Count"
+          },
+          "fulfillment_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fulfillment Rate"
+          }
+        },
+        "type": "object",
+        "required": [
+          "year",
+          "planned_count",
+          "actual_count",
+          "fulfillment_rate"
+        ],
+        "title": "OfficialYearItem",
+        "description": "事业单位年度招录统计项。"
+      },
+      "OverviewStats": {
+        "properties": {
+          "total_jobs": {
+            "type": "integer",
+            "title": "Total Jobs"
+          },
+          "valid_jobs": {
+            "type": "integer",
+            "title": "Valid Jobs"
+          },
+          "active_cities": {
+            "type": "integer",
+            "title": "Active Cities"
+          },
+          "active_companies": {
+            "type": "integer",
+            "title": "Active Companies"
+          },
+          "average_salary": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Average Salary"
+          },
+          "median_salary": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Median Salary"
+          },
+          "new_jobs_30d": {
+            "type": "integer",
+            "title": "New Jobs 30D"
+          },
+          "official_planned_count": {
+            "type": "integer",
+            "title": "Official Planned Count"
+          },
+          "official_records": {
+            "type": "integer",
+            "title": "Official Records"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total_jobs",
+          "valid_jobs",
+          "active_cities",
+          "active_companies",
+          "average_salary",
+          "median_salary",
+          "new_jobs_30d",
+          "official_planned_count",
+          "official_records"
+        ],
+        "title": "OverviewStats",
+        "description": "岗位与事业单位招录概览响应。"
+      },
+      "ProvinceDistributionItem": {
+        "properties": {
+          "province": {
+            "type": "string",
+            "title": "Province"
+          },
+          "job_count": {
+            "type": "integer",
+            "title": "Job Count"
+          },
+          "city_count": {
+            "type": "integer",
+            "title": "City Count"
+          },
+          "company_count": {
+            "type": "integer",
+            "title": "Company Count"
+          },
+          "average_salary": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Average Salary"
+          }
+        },
+        "type": "object",
+        "required": [
+          "province",
+          "job_count",
+          "city_count",
+          "company_count",
+          "average_salary"
+        ],
+        "title": "ProvinceDistributionItem",
+        "description": "单个省份岗位聚合项。"
+      },
+      "RequirementAnalysisResponse": {
+        "properties": {
+          "education_distribution": {
+            "items": {
+              "$ref": "#/components/schemas/DistributionItem"
+            },
+            "type": "array",
+            "title": "Education Distribution"
+          },
+          "experience_distribution": {
+            "items": {
+              "$ref": "#/components/schemas/DistributionItem"
+            },
+            "type": "array",
+            "title": "Experience Distribution"
+          },
+          "education_by_city_level": {
+            "items": {
+              "$ref": "#/components/schemas/GroupDistribution"
+            },
+            "type": "array",
+            "title": "Education By City Level"
+          },
+          "official_vs_enterprise": {
+            "items": {
+              "$ref": "#/components/schemas/GroupDistribution"
+            },
+            "type": "array",
+            "title": "Official Vs Enterprise"
+          }
+        },
+        "type": "object",
+        "required": [
+          "education_distribution",
+          "experience_distribution",
+          "education_by_city_level",
+          "official_vs_enterprise"
+        ],
+        "title": "RequirementAnalysisResponse",
+        "description": "学历与经验要求分析响应。"
+      },
+      "SalaryDistributionResponse": {
+        "properties": {
+          "salary_ranges": {
+            "items": {
+              "$ref": "#/components/schemas/SalaryRangeItem"
+            },
+            "type": "array",
+            "title": "Salary Ranges"
+          },
+          "missing_salary_count": {
+            "type": "integer",
+            "title": "Missing Salary Count"
+          },
+          "by_education": {
+            "items": {
+              "$ref": "#/components/schemas/AverageSalaryItem"
+            },
+            "type": "array",
+            "title": "By Education"
+          },
+          "by_experience": {
+            "items": {
+              "$ref": "#/components/schemas/AverageSalaryItem"
+            },
+            "type": "array",
+            "title": "By Experience"
+          },
+          "by_job_type": {
+            "items": {
+              "$ref": "#/components/schemas/AverageSalaryItem"
+            },
+            "type": "array",
+            "title": "By Job Type"
+          },
+          "top_salary_cities": {
+            "items": {
+              "$ref": "#/components/schemas/AverageSalaryItem"
+            },
+            "type": "array",
+            "title": "Top Salary Cities"
+          }
+        },
+        "type": "object",
+        "required": [
+          "salary_ranges",
+          "missing_salary_count",
+          "by_education",
+          "by_experience",
+          "by_job_type",
+          "top_salary_cities"
+        ],
+        "title": "SalaryDistributionResponse",
+        "description": "薪资区间与多维平均薪资响应。"
+      },
+      "SalaryRangeItem": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "count"
+        ],
+        "title": "SalaryRangeItem",
+        "description": "薪资区间岗位数量项。"
+      },
+      "SkillAnalysisResponse": {
+        "properties": {
+          "top_skills": {
+            "items": {
+              "$ref": "#/components/schemas/NameCount"
+            },
+            "type": "array",
+            "title": "Top Skills"
+          },
+          "cooccurrence": {
+            "$ref": "#/components/schemas/SkillCooccurrence"
+          },
+          "by_job_type": {
+            "items": {
+              "$ref": "#/components/schemas/JobTypeSkillGroup"
+            },
+            "type": "array",
+            "title": "By Job Type"
+          },
+          "overall_average_salary": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overall Average Salary"
+          },
+          "salary_correlation": {
+            "items": {
+              "$ref": "#/components/schemas/SkillSalaryItem"
+            },
+            "type": "array",
+            "title": "Salary Correlation"
+          },
+          "high_premium_skills": {
+            "items": {
+              "$ref": "#/components/schemas/SkillSalaryItem"
+            },
+            "type": "array",
+            "title": "High Premium Skills"
+          }
+        },
+        "type": "object",
+        "required": [
+          "top_skills",
+          "cooccurrence",
+          "by_job_type",
+          "overall_average_salary",
+          "salary_correlation",
+          "high_premium_skills"
+        ],
+        "title": "SkillAnalysisResponse",
+        "description": "技能需求、共现和薪资溢价分析响应。"
+      },
+      "SkillCooccurrence": {
+        "properties": {
+          "skills": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Skills"
+          },
+          "matrix": {
+            "items": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Matrix"
+          },
+          "links": {
+            "items": {
+              "$ref": "#/components/schemas/SkillCooccurrenceLink"
+            },
+            "type": "array",
+            "title": "Links"
+          }
+        },
+        "type": "object",
+        "required": [
+          "skills",
+          "matrix",
+          "links"
+        ],
+        "title": "SkillCooccurrence",
+        "description": "Top 技能共现矩阵及关系边。"
+      },
+      "SkillCooccurrenceLink": {
+        "properties": {
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "target": {
+            "type": "string",
+            "title": "Target"
+          },
+          "value": {
+            "type": "integer",
+            "title": "Value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "source",
+          "target",
+          "value"
+        ],
+        "title": "SkillCooccurrenceLink",
+        "description": "技能共现关系边。"
+      },
+      "SkillSalaryItem": {
+        "properties": {
+          "skill": {
+            "type": "string",
+            "title": "Skill"
+          },
+          "job_count": {
+            "type": "integer",
+            "title": "Job Count"
+          },
+          "average_salary": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Average Salary"
+          },
+          "overall_average_salary": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overall Average Salary"
+          },
+          "premium_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Premium Rate"
+          }
+        },
+        "type": "object",
+        "required": [
+          "skill",
+          "job_count",
+          "average_salary",
+          "overall_average_salary",
+          "premium_rate"
+        ],
+        "title": "SkillSalaryItem",
+        "description": "技能薪资与相对总体薪资溢价项。"
+      },
+      "TrendResponse": {
+        "properties": {
+          "monthly": {
+            "items": {
+              "$ref": "#/components/schemas/MonthlyTrendItem"
+            },
+            "type": "array",
+            "title": "Monthly"
+          },
+          "skill_year_comparison": {
+            "items": {
+              "$ref": "#/components/schemas/YearSkillGroup"
+            },
+            "type": "array",
+            "title": "Skill Year Comparison"
+          }
+        },
+        "type": "object",
+        "required": [
+          "monthly",
+          "skill_year_comparison"
+        ],
+        "title": "TrendResponse",
+        "description": "近月岗位趋势与技能年度对比响应。"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "YearSkillGroup": {
+        "properties": {
+          "year": {
+            "type": "integer",
+            "title": "Year"
+          },
+          "skills": {
+            "items": {
+              "$ref": "#/components/schemas/NameCount"
+            },
+            "type": "array",
+            "title": "Skills"
+          }
+        },
+        "type": "object",
+        "required": [
+          "year",
+          "skills"
+        ],
+        "title": "YearSkillGroup",
+        "description": "单年度高频技能统计。"
+      }
+    }
+  }
+}

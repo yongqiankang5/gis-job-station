@@ -1,0 +1,47 @@
+<view class="container" wx:if="{{job}}">
+  <!-- 基本信息 -->
+  <view class="card">
+    <view class="job-title">{{job.title}}</view>
+    <view class="job-salary" wx:if="{{job.salary_note}}">{{job.salary_note}}</view>
+    <view class="job-company">{{job.company}}</view>
+    <view class="job-meta">
+      <text class="tag tag-blue">{{job.province}} {{job.city}}</text>
+      <text class="tag tag-blue">{{job.education}}</text>
+      <text class="tag tag-blue">{{job.experience}}</text>
+      <text class="tag tag-blue">{{job.job_type}}</text>
+    </view>
+  </view>
+
+  <!-- 技能要求 -->
+  <view class="card" wx:if="{{job.skills.length > 0}}">
+    <view class="section-title">技能要求</view>
+    <view class="skill-list">
+      <text class="tag tag-blue" wx:for="{{job.skills}}" wx:key="*this">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 发布信息 -->
+  <view class="card">
+    <view class="section-title">发布信息</view>
+    <view class="info-row">
+      <text class="label">发布日期</text>
+      <text class="value">{{job.publish_date || '未知'}}</text>
+    </view>
+    <view class="info-row">
+      <text class="label">数据来源</text>
+      <text class="value">BOSS直聘</text>
+    </view>
+    <view class="info-row">
+      <text class="label">质量评分</text>
+      <text class="value">{{job.quality_score}} / 100</text>
+    </view>
+  </view>
+
+  <!-- 按钮 -->
+  <button class="btn-primary" bindtap="openOriginal">复制原始岗位链接</button>
+</view>
+
+<!-- 加载中 -->
+<view class="loading" wx:if="{{loading}}">
+  <text>加载中...</text>
+</view>

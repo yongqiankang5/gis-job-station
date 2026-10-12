@@ -1,0 +1,47 @@
+<view class="container">
+  <!-- 头部 -->
+  <view class="header">
+    <view class="title">GIS遥感就业情报站</view>
+    <view class="subtitle">数据更新至 {{overview.data_updated_at || '加载中...'}}</view>
+  </view>
+
+  <!-- 指标卡片 -->
+  <view class="metric-grid" wx:if="{{overview}}">
+    <view class="metric-card" bindtap="goToJobs">
+      <text class="metric-value">{{overview.valid_jobs}}</text>
+      <text class="metric-label">在招岗位</text>
+    </view>
+    <view class="metric-card">
+      <text class="metric-value">{{overview.active_cities}}</text>
+      <text class="metric-label">覆盖城市</text>
+    </view>
+    <view class="metric-card">
+      <text class="metric-value">{{overview.average_salary}}K</text>
+      <text class="metric-label">平均月薪</text>
+    </view>
+    <view class="metric-card">
+      <text class="metric-value">{{overview.official_planned_count}}</text>
+      <text class="metric-label">事业招录计划</text>
+    </view>
+  </view>
+
+  <!-- 快速入口 -->
+  <view class="card">
+    <view class="section-title">快速导航</view>
+    <view class="nav-list">
+      <view class="nav-item" bindtap="goToJobs">
+        <text>岗位浏览</text>
+        <text class="arrow">›</text>
+      </view>
+      <view class="nav-item" bindtap="goToStats">
+        <text>数据分析</text>
+        <text class="arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>数据加载中...</text>
+  </view>
+</view>

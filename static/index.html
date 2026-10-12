@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="GIS、遥感与测绘岗位查询、地图分布和就业趋势分析平台">
+  <meta name="theme-color" content="#2c5f8f">
+  <title>GIS 遥感就业情报站</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%232c5f8f'/%3E%3Ccircle cx='32' cy='32' r='14' fill='none' stroke='white' stroke-width='4'/%3E%3Ccircle cx='32' cy='32' r='4' fill='%23e8f0f8'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#index" aria-label="返回首页大盘">
+        <span class="brand-mark" aria-hidden="true">◎</span>
+        <span>
+          <strong>GIS 遥感就业情报站</strong>
+          <small>GEOSPATIAL CAREER INTELLIGENCE</small>
+        </span>
+      </a>
+      <div class="topbar-meta">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span id="data-updated">数据更新时间：正在获取</span>
+        <span class="meta-divider" aria-hidden="true"></span>
+        <span>招聘平台 + 政府公开信息</span>
+      </div>
+      <button id="mobile-nav-toggle" class="mobile-nav-toggle" type="button" aria-label="打开导航" aria-expanded="false">☰</button>
+    </header>
+
+    <aside id="sidebar" class="sidebar" aria-label="主导航">
+      <nav>
+        <a class="nav-item active" href="#index" data-view="index" title="首页大盘"><span>🏠</span><em>首页</em></a>
+        <a class="nav-item" href="#jobs" data-view="jobs" title="岗位查询"><span>📋</span><em>岗位</em></a>
+        <a class="nav-item" href="#map" data-view="map" title="地图分布"><span>🗺️</span><em>地图</em></a>
+        <a class="nav-item" href="#skills" data-view="skills" title="技能分析"><span>📊</span><em>技能</em></a>
+        <a class="nav-item" href="#salary" data-view="salary" title="薪资分析"><span>💰</span><em>薪资</em></a>
+        <a class="nav-item" href="#official" data-view="official" title="事业单位"><span>🏛️</span><em>事业</em></a>
+        <a class="nav-item" href="#trend" data-view="trend" title="趋势分析"><span>📈</span><em>趋势</em></a>
+      </nav>
+    </aside>
+
+    <main id="view-root" class="main-content" tabindex="-1" aria-live="polite">
+      <section class="initial-loading" aria-label="页面加载中">
+        <div class="skeleton skeleton-title"></div>
+        <div class="skeleton-grid">
+          <div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">数据来源于公开招聘平台及政府网站，仅供参考，不构成求职建议</footer>
+  </div>
+
+  <div id="toast-region" class="toast-region" aria-live="assertive"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts-wordcloud@2.1.0/dist/echarts-wordcloud.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>

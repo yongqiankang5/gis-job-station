@@ -1,0 +1,47 @@
+name: 自动更新小程序数据
+
+on:
+  # 手动触发
+  workflow_dispatch:
+  # 定时运行（这里是示例，BOSS抓取还是建议本地跑）
+  schedule:
+    - cron: '0 20 * * 1'  # 每周一晚上8点（北京时间=UTC+8，对应UTC 12点）
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # 允许自动提交代码
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 设置Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 安装依赖
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # ⚠️ 注意：BOSS直聘在云端跑会被封IP、需要登录验证，不建议在这里跑BOSS爬虫
+      # 这里只跑不需要登录的公开数据源，比如政府事业单位、国聘网
+      - name: 跑公开数据源采集
+        run: |
+          echo "这里跑政府网站、国聘网等公开源采集"
+          # python scripts/run_official_scraper.py
+
+      - name: 清洗数据
+        run: python scripts/run_clean.py
+
+      - name: 导出小程序数据
+        run: python scripts/export_miniprogram_data.py
+
+      - name: 自动提交更新
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add miniprogram/data/
+          git diff --staged --quiet || git commit -m "更新数据: $(date +%Y-%m-%d)"
+          git push

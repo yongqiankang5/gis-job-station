@@ -1,0 +1,18 @@
+<view class="container">
+  <view class="card">
+    <view class="section-title">全国岗位城市分布</view>
+    <view class="city-list">
+      <view class="city-row" wx:for="{{cities}}" wx:key="city">
+        <text class="city-name">{{item.city}}</text>
+        <view class="city-bar">
+          <view class="city-bar-fill" style="width: {{item.job_count / cities[0].job_count * 100}}%"></view>
+        </view>
+        <text class="city-count">{{item.job_count}} 个岗位</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>

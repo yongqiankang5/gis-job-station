@@ -1,0 +1,31 @@
+{
+  "package_name": "GIS遥感就业情报站-AI交接包-20260908-205304",
+  "generated_at": "2026-09-08T20:53:08+08:00",
+  "project_type": "FastAPI + SQLite + static HTML/CSS/JavaScript SPA",
+  "wechat_native_status": "尚未创建原生微信小程序目录",
+  "jobs_total": 2259,
+  "jobs_valid": 2237,
+  "jobs_by_source": {
+    "demo": 96,
+    "boss": 2163
+  },
+  "active_cities": 34,
+  "official_records": 24,
+  "official_note": "当前24条事业单位结构化记录全部为演示数据",
+  "database_note": "SQLite一致性快照；crawl_logs已清空",
+  "excluded": [
+    ".env",
+    ".venv",
+    "Cookie",
+    "浏览器用户目录",
+    "完整抓取日志",
+    "全部政府原始HTML",
+    "__pycache__"
+  ],
+  "start_here": [
+    "AI继续开发交接说明.md",
+    "给下一个大模型的提示词.md",
+    "README.md",
+    "openapi.json"
+  ]
+}

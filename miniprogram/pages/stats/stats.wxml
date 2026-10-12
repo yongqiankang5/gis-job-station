@@ -1,0 +1,42 @@
+<view class="container">
+  <!-- 薪资分布 -->
+  <view class="card" wx:if="{{salary}}">
+    <view class="section-title">薪资分布 (K/月)</view>
+    <view class="bar-chart">
+      <view class="bar-row" wx:for="{{salary.salary_ranges}}" wx:key="name">
+        <text class="bar-label">{{item.name}}</text>
+        <view class="bar-track">
+          <view class="bar-fill" style="width: {{item.count / salary.salary_ranges[0].count * 100}}%"></view>
+        </view>
+        <text class="bar-count">{{item.count}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Top城市 -->
+  <view class="card" wx:if="{{cities}}">
+    <view class="section-title">岗位数量 Top10 城市</view>
+    <view class="bar-chart">
+      <view class="bar-row" wx:for="{{cities}}" wx:key="city">
+        <text class="bar-label">{{item.city}}</text>
+        <view class="bar-track">
+          <view class="bar-fill" style="width: {{item.job_count / cities[0].job_count * 100}}%"></view>
+        </view>
+        <text class="bar-count">{{item.job_count}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 热门技能 -->
+  <view class="card" wx:if="{{skills}}">
+    <view class="section-title">热门技能 Top10</view>
+    <view class="skill-tags">
+      <text class="tag tag-blue" wx:for="{{skills}}" wx:key="name">{{item.name}} ({{item.count}})</text>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>数据加载中...</text>
+  </view>
+</view>

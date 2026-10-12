@@ -1,0 +1,56 @@
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 30rpx;
+  color: #333;
+}
+
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.bar-label {
+  width: 120rpx;
+  font-size: 24rpx;
+  color: #666;
+  text-align: right;
+}
+
+.bar-track {
+  flex: 1;
+  height: 24rpx;
+  background: #f0f0f0;
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4d89b7, #2c5f8f);
+  border-radius: 12rpx;
+}
+
+.bar-count {
+  width: 60rpx;
+  font-size: 24rpx;
+  color: #666;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.loading {
+  text-align: center;
+  padding: 200rpx 0;
+  color: #999;
+}

@@ -1,0 +1,37 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gis-job-tracker-app
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-sqlite:///./data/gis_jobs.db}
+      ENABLE_SCHEDULER: ${ENABLE_SCHEDULER:-true}
+      CHROMIUM_PATH: ${CHROMIUM_PATH:-/usr/bin/chromium}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./static:/app/static:ro
+    shm_size: "1gb"
+    restart: unless-stopped
+
+  # Redis 为可选缓存服务。需要缓存时在 .env 中设置：
+  # REDIS_URL=redis://redis:6379/0
+  redis:
+    image: redis:7-alpine
+    container_name: gis-job-tracker-redis
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  redis_data:
